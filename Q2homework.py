@@ -121,7 +121,7 @@ def Q2SOR2(n=9, max_iter=1000, tol=1e-5):
                 ) / 4
                 u[i, j] = (1 - w) * uo + w * u_new
                 e = e + np.abs(u[i, j] - uo)
-        if e < tol:
+        if e / n**2 < tol:
             break
     print(f"SOR2迭代次数为：{k+1}")
     return u
