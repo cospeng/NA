@@ -519,7 +519,7 @@ def main():
     # Q2huatu(Q2block_gs())
     # Q2huatu(Q2block_j())
     # Q2huatu(Q2block_SOR())
-    # Q2huatu(Q2block_SSOR())
+    Q2huatu(Q2block_SSOR())
 
 
 if __name__ == "__main__":
