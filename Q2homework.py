@@ -508,18 +508,41 @@ def Q2huatu(data):
 
 
 def main():
-    # Q2huatu(Q2SOR2())
-    # Q2huatu(Q2gs())
-    # Q2huatu(Q2SOR())
-    # Q2huatu(Q2SSOR())
-    # Q2huatu(gradient_descent_without_A())
-    # Q2huatu(CG())
-    Q2huatu(Q2J())
-    Q2huatu(Q2j())
-    # Q2huatu(Q2block_gs())
-    # Q2huatu(Q2block_j())
-    # Q2huatu(Q2block_SOR())
-    Q2huatu(Q2block_SSOR())
+    algorithms = {
+        '1': Q2J,
+        '2': Q2gs,
+        '3': Q2SOR,
+        '4': Q2block_j,
+        '5': Q2block_gs,
+        '6': Q2block_SOR,
+        '7': Q2SSOR,
+        '8': Q2block_SSOR,
+        '9': gradient_descent_without_A,
+        '10': CG
+    }
+    
+    print("请选择要模拟的算法 (用逗号分隔多个编号):")
+    for key, value in algorithms.items():
+        print(f"{key}: {value.__name__}")
+    
+    choices = input("输入算法编号: ").split(',')
+    plot = input("是否绘图? (y/n): ").strip().lower() == 'y'
+    
+    results = []
+    for choice in choices:
+        choice = choice.strip()  # 去掉多余的空格
+        if choice in algorithms:
+            algorithm_function = algorithms[choice]
+            result = algorithm_function()
+            results.append(result)
+        else:
+            print(f"无效的选择: {choice}")
+
+    if plot:
+        for result in results:
+            Q2huatu(result)
+    else:
+        print("算法结果:", results)
 
 
 if __name__ == "__main__":
