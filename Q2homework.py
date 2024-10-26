@@ -152,7 +152,7 @@ def Q2J(n=9, max_iter=1000, tol=1e-5):
     f = np.full([n + 2, n + 2], h**2 * 2)
     for k in range(max_iter):
         e = 0.0
-        uo = u.copy()
+        uo = u.copy() # 存储上一个迭代步数的解
         for j in range(1, n + 1):
             for i in range(1, n + 1):
                 uol = u[i, j].copy()
@@ -166,7 +166,7 @@ def Q2J(n=9, max_iter=1000, tol=1e-5):
     return u
 
 
-def Q2block_gs(n=9, max_iter=1000, tol=1e-5):
+def Q2Bgs(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.zeros([n + 2, n + 2])
@@ -189,7 +189,7 @@ def Q2block_gs(n=9, max_iter=1000, tol=1e-5):
     return u
 
 
-def Q2block_SOR(n=9, max_iter=1000, tol=1e-5, w=1.44):
+def Q2BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.zeros([n + 2, n + 2])
@@ -212,7 +212,7 @@ def Q2block_SOR(n=9, max_iter=1000, tol=1e-5, w=1.44):
     return u
 
 
-def Q2block_SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def Q2BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     um = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
@@ -225,8 +225,8 @@ def Q2block_SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         e1 = 0.0
         e2 = 0.0
         for j in range(1, n + 1):
-            u_old = u[:, j].copy()
-            d1 = f[1 : n + 1, j] + u[1 : n + 1, j - 1] + u[1 : n + 1, j + 1]
+            u_old = um[:, j].copy()
+            d1 = f[1 : n + 1, j] + um[1 : n + 1, j - 1] + um[1 : n + 1, j + 1]
             x = zg(a, b, c, d1)
             um[1 : n + 1, j] = w * x + (1 - w) * u_old[1 : n + 1]
             e1 = e1 + np.linalg.norm(u_old - um[:, j], 1)
@@ -243,7 +243,7 @@ def Q2block_SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     return u
 
 
-def Q2block_j(n=9, max_iter=1000, tol=1e-5):
+def Q2Bj(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -296,7 +296,7 @@ def Q2SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
 
 def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
-    xkp1o2 = np.zeros([n + 2, n + 2])
+    um = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
     w = 1.4
@@ -305,29 +305,29 @@ def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         e2 = 0.0
         for j in range(1, n + 1):
             for i in range(1, n + 1):
-                uo = u[i, j].copy()
-                xkp1o2[i, j] = (
+                uo = um[i, j].copy()
+                um[i, j] = (
                     (
-                        (4 / w - 4) * u[i, j]
-                        + u[i - 1, j]
-                        + u[i + 1, j]
-                        + u[i, j - 1]
-                        + u[i, j + 1]
+                        (4 / w - 4) * um[i, j]
+                        + um[i - 1, j]
+                        + um[i + 1, j]
+                        + um[i, j - 1]
+                        + um[i, j + 1]
                         + f[i, j]
                     )
                     * w
                     / 4
                 )
-                e1 = e1 + np.abs(xkp1o2[i, j] - uo)
+                e1 = e1 + np.abs(um[i, j] - uo)
         for j in range(n, 0, -1):
             for i in range(n, 0, -1):
-                uo1 = xkp1o2[i, j].copy()
+                uo1 = um[i, j].copy()
                 u[i, j] = (
                     (
-                        (4 / w - 4) * u[i, j]
-                        + xkp1o2[i - 1, j]
+                        (4 / w - 4) * um[i, j]
+                        + um[i - 1, j]
                         + u[i + 1, j]
-                        + xkp1o2[i, j - 1]
+                        + um[i, j - 1]
                         + u[i, j + 1]
                         + f[i, j]
                     )
@@ -373,7 +373,7 @@ def zsxj(n=9, max_iter=1000, tol=1e-5):
     return u.reshape([n, n])
 
 
-def gradient_descent_without_A(n=9, max_iter=1000, tol=1e-5):
+def GD(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -512,12 +512,12 @@ def main():
         '1': Q2J,
         '2': Q2gs,
         '3': Q2SOR,
-        '4': Q2block_j,
-        '5': Q2block_gs,
-        '6': Q2block_SOR,
+        '4': Q2Bj,
+        '5': Q2Bgs,
+        '6': Q2BSOR,
         '7': Q2SSOR,
-        '8': Q2block_SSOR,
-        '9': gradient_descent_without_A,
+        '8': Q2BSSOR,
+        '9': GD,
         '10': CG
     }
     
