@@ -2,50 +2,55 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.sparse import diags
+import time
+import scienceplots
+plt.style.use(['science', 'no-latex'])
+#plt.rcParams.update({
+#    "font.family": "serif",   # specify font family here
+    #"font.serif": ["Source Han Serif SC VF"],  # specify font here
+    #})          # specify font size here
+#def huashangsanjiao(Ab):
+    #n = Ab.shape[0]
+    #Ab = Ab.astype(float)
+    #for k in range(1, n):
+        #index = np.argmax(abs(Ab[k - 1 :, k - 1]))
+        #Ab[[index + k - 1, k - 1], :] = Ab[[k - 1, index + k - 1], :]
+        #for i in range(k + 1, n + 1):
+            #Ab[i - 1, k - 1] = Ab[i - 1, k - 1] / Ab[k - 1, k - 1]
+            #Ab[i - 1, k:] = Ab[i - 1, k:] - Ab[i - 1, k - 1] * Ab[k - 1, k:]
+    #return Ab
 
 
-def huashangsanjiao(Ab):
-    n = Ab.shape[0]
-    Ab = Ab.astype(float)
-    for k in range(1, n):
-        index = np.argmax(abs(Ab[k - 1 :, k - 1]))
-        Ab[[index + k - 1, k - 1], :] = Ab[[k - 1, index + k - 1], :]
-        for i in range(k + 1, n + 1):
-            Ab[i - 1, k - 1] = Ab[i - 1, k - 1] / Ab[k - 1, k - 1]
-            Ab[i - 1, k:] = Ab[i - 1, k:] - Ab[i - 1, k - 1] * Ab[k - 1, k:]
-    return Ab
+#def qiujie(Ab):
+    #""" """
+    #n = Ab.shape[0]
+    #Ab = Ab.astype(float)
+    #b = Ab[:, -1]
+    #X = np.zeros([n])
+    #X[n - 1] = b[n - 1] / Ab[n - 1, n - 1]
+    #for i in range(n - 2, -1, -1):
+        #X[i] = (b[i] - Ab[i, i + 1 : n].dot(X[i + 1 : n])) / Ab[i, i]
+    #return X
 
 
-def qiujie(Ab):
-    """ """
-    n = Ab.shape[0]
-    Ab = Ab.astype(float)
-    b = Ab[:, -1]
-    X = np.zeros([n])
-    X[n - 1] = b[n - 1] / Ab[n - 1, n - 1]
-    for i in range(n - 2, -1, -1):
-        X[i] = (b[i] - Ab[i, i + 1 : n].dot(X[i + 1 : n])) / Ab[i, i]
-    return X
+#def duichenzhengdingxin(A):
+    #tzz = np.linalg.eig(A)[0]
+    #return np.all(tzz > 0) and np.all(A == A.T)
 
 
-def duichenzhengdingxin(A):
-    tzz = np.linalg.eig(A)[0]
-    return np.all(tzz > 0) and np.all(A == A.T)
-
-
-def gs(A, b):
-    n = b.shape[0]
-    x = np.zeros([1001, n])
-    for k in range(1000):
-        e = 0.0
-        for i in range(n):
-            x[k + 1, i] = (
-                b[i] - A[i, :i].dot(x[k, :i]) - A[i, i + 1 :].dot(x[k, i + 1 :])
-            ) / A[i, i]
-        e = e + np.max(np.abs(x[k + 1] - x[k]))
-        if e < 0.0001:
-            break
-    return x[k + 1]
+#def gs(A, b):
+    #n = b.shape[0]
+    #x = np.zeros([1001, n])
+    #for k in range(1000):
+        #e = 0.0
+        #for i in range(n):
+            #x[k + 1, i] = (
+                #b[i] - A[i, :i].dot(x[k, :i]) - A[i, i + 1 :].dot(x[k, i + 1 :])
+            #) / A[i, i]
+        #e = e + np.max(np.abs(x[k + 1] - x[k]))
+        #if e < 0.0001:
+            #break
+    #return x[k + 1]
 
 
 def zg(a, b, c, d):
@@ -103,7 +108,7 @@ def Q2j(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"三维数组jacobi迭代次数为：{k+1}")
-    return u[k + 1]
+    return u[k + 1], k+1
 
 
 def Q2SOR2(n=9, max_iter=1000, tol=1e-5):
@@ -124,7 +129,7 @@ def Q2SOR2(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"SOR2迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2gs(n=9, max_iter=1000, tol=1e-5):
@@ -143,7 +148,7 @@ def Q2gs(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"G-S迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2J(n=9, max_iter=1000, tol=1e-5):
@@ -163,7 +168,7 @@ def Q2J(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"Jacobi迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2Bgs(n=9, max_iter=1000, tol=1e-5):
@@ -186,7 +191,7 @@ def Q2Bgs(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"块Gauss-Seider方法迭代次数：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
@@ -209,7 +214,7 @@ def Q2BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         if e / n**2 < tol:
             break
     print(f"块SOR方法迭代次数：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
@@ -240,7 +245,7 @@ def Q2BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         if (e1 + e2) / n**2 < tol:
             break
     print(f"块SSOR方法迭代次数：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2Bj(n=9, max_iter=1000, tol=1e-5):
@@ -263,7 +268,7 @@ def Q2Bj(n=9, max_iter=1000, tol=1e-5):
         if e / n**2 < tol:
             break
     print(f"块Jacobi方法迭代次数：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
@@ -291,7 +296,7 @@ def Q2SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         if e / n**2 < tol:
             break
     print(f"SOR迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
@@ -338,7 +343,7 @@ def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
         if (e1 + e2) / n**2 < tol:
             break
     print(f"SSOR迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def zsxj(n=9, max_iter=1000, tol=1e-5):
@@ -369,8 +374,8 @@ def zsxj(n=9, max_iter=1000, tol=1e-5):
         u = u + alphak * r
         if np.linalg.norm((u - uo)) / n**2 < tol:
             break
-    print(f"最速下降迭代次数：{k}")
-    return u.reshape([n, n])
+    print(f"最速下降迭代次数：{k+1}")
+    return u.reshape([n, n]), k+1
 
 
 def GD(n=9, max_iter=1000, tol=1e-5):
@@ -415,7 +420,7 @@ def GD(n=9, max_iter=1000, tol=1e-5):
             break
 
     print(f"最速下降法迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def CG(n=9, max_iter=1000, tol=1e-5):
@@ -477,7 +482,7 @@ def CG(n=9, max_iter=1000, tol=1e-5):
                 p[i, j] = r[i, j] + beta_k * p[i, j]
 
     print(f"CG法迭代次数为：{k+1}")
-    return u
+    return u, k+1
 
 
 def Q2huatu(data):
@@ -528,21 +533,58 @@ def main():
     choices = input("输入算法编号: ").split(',')
     plot = input("是否绘图? (y/n): ").strip().lower() == 'y'
     
-    results = []
+    metrics = []  # 用于存储每个算法的性能指标
+    
     for choice in choices:
         choice = choice.strip()  # 去掉多余的空格
         if choice in algorithms:
             algorithm_function = algorithms[choice]
-            result = algorithm_function()
-            results.append(result)
+            
+            # 记录开始时间
+            start_time = time.time()
+            
+            # 执行算法并获取结果和迭代次数
+            u, k = algorithm_function()
+            
+            # 记录结束时间和总时间
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            
+            # 存储性能指标
+            metrics.append({
+                'algorithm': algorithm_function.__name__,
+                'iterations': k,
+                'time': elapsed_time
+            })
         else:
             print(f"无效的选择: {choice}")
 
+    # 如果需要绘制对比图
     if plot:
-        for result in results:
-            Q2huatu(result)
+        # 提取数据用于绘图
+        algorithms = [m['algorithm'] for m in metrics]
+        iterations = [m['iterations'] for m in metrics]
+        times = [m['time'] for m in metrics]
+        
+        fig, ax1 = plt.subplots(figsize=(10, 6))
+
+        # 绘制迭代次数柱状图
+        ax1.bar(algorithms, iterations, alpha=0.6, label='Iterations')
+        ax1.set_ylabel('Iterations')
+        ax1.tick_params(axis='y', labelcolor='b')
+        
+        # 创建第二个y轴共享x轴，用于绘制时间数据
+        ax2 = ax1.twinx()
+        ax2.plot(algorithms, times, marker='o', label='Time (s)')
+        ax2.set_ylabel('Time (s)',)
+        ax2.tick_params(axis='y', labelcolor='r')
+
+        # 显示图例和标题
+        fig.suptitle("Algorithm Performance Comparison")
+        fig.tight_layout()  # 调整布局避免重叠
+        plt.show()
     else:
-        print("算法结果:", results)
+        print("算法性能指标:", metrics)
 
 
 if __name__ == "__main__":
