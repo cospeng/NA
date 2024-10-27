@@ -569,14 +569,14 @@ def main():
         fig, ax1 = plt.subplots(figsize=(10, 6))
 
         # 绘制迭代次数柱状图
-        ax1.bar(algorithms, iterations, alpha=0.6, label='Iterations')
-        ax1.set_ylabel('Iterations')
+        ax1.bar(algorithms, iterations, color='b', alpha=0.6, label='Iterations')
+        ax1.set_ylabel('Iterations', color='b')
         ax1.tick_params(axis='y', labelcolor='b')
         
         # 创建第二个y轴共享x轴，用于绘制时间数据
         ax2 = ax1.twinx()
-        ax2.plot(algorithms, times, marker='o', label='Time (s)')
-        ax2.set_ylabel('Time (s)',)
+        ax2.plot(algorithms, times, color='r', marker='o', label='Time (s)')
+        ax2.set_ylabel('Time (s)', color='r')
         ax2.tick_params(axis='y', labelcolor='r')
 
         # 显示图例和标题
