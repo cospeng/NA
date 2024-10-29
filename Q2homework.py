@@ -7,10 +7,13 @@ import scienceplots
 import pandas as pd
 
 plt.style.use(["science", "no-latex"])
-# plt.rcParams.update({
-#    "font.family": "serif",   # specify font family here
-# "font.serif": ["Source Han Serif SC VF"],  # specify font here
-# })          # specify font size here
+plt.rcParams.update(
+    {
+        "font.size": 14
+        # "font.family": "serif",
+        # "font.serif": ["Source Han Serif SC VF"],
+    }
+)
 # def huashangsanjiao(Ab):
 # n = Ab.shape[0]
 # Ab = Ab.astype(float)
@@ -113,11 +116,10 @@ def Q2j(n=9, max_iter=1000, tol=1e-5):
     return u[k + 1], k + 1
 
 
-def Q2SOR2(n=9, max_iter=1000, tol=1e-5):
+def Q2SOR2(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
-    w = 1.4
     for k in range(max_iter):
         e = 0.0
         for j in range(1, n + 1):
@@ -306,7 +308,6 @@ def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     um = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
-    w = 1.4
     for k in range(max_iter):
         e1 = 0.0
         e2 = 0.0
