@@ -94,7 +94,7 @@ def zg(a, b, c, d):
     return x
 
 
-def Q2j(n=9, max_iter=1000, tol=1e-5):
+def j(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([1001, n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -116,7 +116,7 @@ def Q2j(n=9, max_iter=1000, tol=1e-5):
     return u[k + 1], k + 1
 
 
-def Q2SOR2(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def SOR2(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -136,7 +136,7 @@ def Q2SOR2(n=9, max_iter=1000, tol=1e-5, w=1.4):
     return u, k + 1
 
 
-def Q2gs(n=9, max_iter=1000, tol=1e-5):
+def GS(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -155,7 +155,7 @@ def Q2gs(n=9, max_iter=1000, tol=1e-5):
     return u, k + 1
 
 
-def Q2J(n=9, max_iter=1000, tol=1e-5):
+def J(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -175,7 +175,7 @@ def Q2J(n=9, max_iter=1000, tol=1e-5):
     return u, k + 1
 
 
-def Q2Bgs(n=9, max_iter=1000, tol=1e-5):
+def BGS(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.zeros([n + 2, n + 2])
@@ -198,7 +198,7 @@ def Q2Bgs(n=9, max_iter=1000, tol=1e-5):
     return u, k + 1
 
 
-def Q2BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.zeros([n + 2, n + 2])
@@ -221,7 +221,7 @@ def Q2BSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     return u, k + 1
 
 
-def Q2BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     um = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
@@ -252,7 +252,7 @@ def Q2BSSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     return u, k + 1
 
 
-def Q2Bj(n=9, max_iter=1000, tol=1e-5):
+def BJ(n=9, max_iter=1000, tol=1e-5):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -275,7 +275,7 @@ def Q2Bj(n=9, max_iter=1000, tol=1e-5):
     return u, k + 1
 
 
-def Q2SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
     f = np.full([n + 2, n + 2], h**2 * 2)
@@ -303,7 +303,7 @@ def Q2SOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     return u, k + 1
 
 
-def Q2SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
+def SSOR(n=9, max_iter=1000, tol=1e-5, w=1.4):
     u = np.zeros([n + 2, n + 2])
     um = np.zeros([n + 2, n + 2])
     h = 1 / (n + 1)
@@ -488,7 +488,7 @@ def CG(n=9, max_iter=1000, tol=1e-5):
     return u, k + 1
 
 
-def Q2huatu(data):
+def huatu(data):
     # 创建3D图形
     fig = plt.figure(figsize=(10, 7))
 
@@ -538,14 +538,14 @@ def main():
 
     # 定义算法列表
     algorithms = {
-        "1": Q2J,
-        "2": Q2gs,
-        "3": Q2SOR,
-        "4": Q2Bj,
-        "5": Q2Bgs,
-        "6": Q2BSOR,
-        "7": Q2SSOR,
-        "8": Q2BSSOR,
+        "1": J,
+        "2": GS,
+        "3": SOR,
+        "4": BJ,
+        "5": BGS,
+        "6": BSOR,
+        "7": SSOR,
+        "8": BSSOR,
         "9": GD,
         "10": CG,
     }
@@ -610,15 +610,15 @@ def main():
         fig, ax1 = plt.subplots(figsize=(10, 6))
 
         # 绘制迭代次数柱状图
-        ax1.bar(algorithms, iterations, color="b", alpha=0.6, label="Iterations")
-        ax1.set_ylabel("Iterations", color="b")
-        ax1.tick_params(axis="y", labelcolor="b")
+        ax1.bar(algorithms, iterations, alpha=0.6, label="Iterations")
+        ax1.set_ylabel("Iterations")
+        ax1.tick_params(axis="y")
 
         # 创建第二个y轴共享x轴，用于绘制时间数据
         ax2 = ax1.twinx()
-        ax2.plot(algorithms, times, color="r", marker="o", label="Time (s)")
-        ax2.set_ylabel("Time (s)", color="r")
-        ax2.tick_params(axis="y", labelcolor="r")
+        ax2.plot(algorithms, times, marker="o", label="Time (s)")
+        ax2.set_ylabel("Time (s)")
+        ax2.tick_params(axis="y")
 
         # 显示图例和标题
         fig.suptitle("Algorithm Performance Comparison")
