@@ -627,6 +627,7 @@ def main():
         plt.show()
     else:
         print("算法性能指标:", metrics)
+        np.set_printoptions(linewidth=200)
         print(u)
 
 
