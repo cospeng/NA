@@ -626,6 +626,7 @@ def main():
         plt.show()
     else:
         print("算法性能指标:", metrics)
+        print(u)
 
 
 if __name__ == "__main__":
