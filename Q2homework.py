@@ -621,6 +621,7 @@ def main():
         ax2.tick_params(axis="y")
 
         # 显示图例和标题
+        fig.legend()
         fig.suptitle("Algorithm Performance Comparison")
         fig.tight_layout()  # 调整布局避免重叠
         plt.show()
