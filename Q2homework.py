@@ -14,48 +14,7 @@ plt.rcParams.update(
         # "font.serif": ["Source Han Serif SC VF"],
     }
 )
-# def huashangsanjiao(Ab):
-# n = Ab.shape[0]
-# Ab = Ab.astype(float)
-# for k in range(1, n):
-# index = np.argmax(abs(Ab[k - 1 :, k - 1]))
-# Ab[[index + k - 1, k - 1], :] = Ab[[k - 1, index + k - 1], :]
-# for i in range(k + 1, n + 1):
-# Ab[i - 1, k - 1] = Ab[i - 1, k - 1] / Ab[k - 1, k - 1]
-# Ab[i - 1, k:] = Ab[i - 1, k:] - Ab[i - 1, k - 1] * Ab[k - 1, k:]
-# return Ab
 
-
-# def qiujie(Ab):
-# """ """
-# n = Ab.shape[0]
-# Ab = Ab.astype(float)
-# b = Ab[:, -1]
-# X = np.zeros([n])
-# X[n - 1] = b[n - 1] / Ab[n - 1, n - 1]
-# for i in range(n - 2, -1, -1):
-# X[i] = (b[i] - Ab[i, i + 1 : n].dot(X[i + 1 : n])) / Ab[i, i]
-# return X
-
-
-# def duichenzhengdingxin(A):
-# tzz = np.linalg.eig(A)[0]
-# return np.all(tzz > 0) and np.all(A == A.T)
-
-
-# def gs(A, b):
-# n = b.shape[0]
-# x = np.zeros([1001, n])
-# for k in range(1000):
-# e = 0.0
-# for i in range(n):
-# x[k + 1, i] = (
-# b[i] - A[i, :i].dot(x[k, :i]) - A[i, i + 1 :].dot(x[k, i + 1 :])
-# ) / A[i, i]
-# e = e + np.max(np.abs(x[k + 1] - x[k]))
-# if e < 0.0001:
-# break
-# return x[k + 1]
 
 
 def zg(a, b, c, d):
